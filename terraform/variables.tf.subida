@@ -1,0 +1,27 @@
+// Credenciales de acceso a OpenNebula
+
+variable "opennebula_username" {
+  default = "ciber-06"
+}
+
+variable "opennebula_token" {
+  default = "d2f6e846fff3b9c1363133e796eb658ecd347a68ca7eccbdc5617638eee4865a"
+}
+
+// Plantilla de máquina virtual
+
+data "opennebula_templates" "busqueda" {
+  name_regex = "Debian 12 - 20241124"
+  sort_on    = "register_date"
+  order      = "ASC" # La más reciente
+}
+
+data "opennebula_template" "plantilla" {
+  id = data.opennebula_templates.busqueda.templates[0].id
+}
+
+// Red virtual
+
+data "opennebula_virtual_network" "red" {
+  name = "ciber-06"
+}
