@@ -1,0 +1,28 @@
+services:
+  terraform-ansible:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: workspace
+    container_name: terraform-ansible
+    volumes:
+      # Volumen para Terraform
+      - ./terraform:/terraform
+      # Volumen para Ansible
+      - ./ansible:/ansible
+      # Directorio home persistente
+      - homedir:/root
+    networks:
+      default:
+        ipv4_address: ${CONTAINER_IP:-10.131.0.100}
+    tty: true
+
+volumes:
+  homedir:
+
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: ${DOCKER_SUBNET:-10.131.0.0/24}
